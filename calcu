@@ -1,0 +1,166 @@
+JAVA
+
+package com.example.calcu;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+public class MainActivity extends AppCompatActivity {
+    EditText t1, t2, t3;
+    Button bb1, bb2, bb3, bb4;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        t1 = (EditText) findViewById(R.id.editTextText);
+        t2 = (EditText) findViewById(R.id.editTextText2);
+        t3 = (EditText) findViewById(R.id.editTextText3);
+        bb1 = (Button) findViewById(R.id.button);
+        bb2 = (Button) findViewById(R.id.button2);
+        bb3 = (Button) findViewById(R.id.button3);
+        bb4 = (Button) findViewById(R.id.button4);
+        bb1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int n1 = Integer.parseInt(t1.getText().toString());
+                int n2 = Integer.parseInt(t2.getText().toString());
+                int n3 = n1 + n2;
+                String n4 = String.valueOf(n3);
+                t3.setText(n4);
+            }
+        });
+        bb2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int n1 = Integer.parseInt(t1.getText().toString());
+                int n2 = Integer.parseInt(t2.getText().toString());
+                int n3 = n1 - n2;
+                String n4 = String.valueOf(n3);
+                t3.setText(n4);
+            }
+        });
+        bb3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int n1 = Integer.parseInt(t1.getText().toString());
+                int n2 = Integer.parseInt(t2.getText().toString());
+                int n3 = n1 * n2;
+                String n4 = String.valueOf(n3);
+                t3.setText(n4);
+            }
+        });
+        bb4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int n1 = Integer.parseInt(t1.getText().toString());
+                int n2 = Integer.parseInt(t2.getText().toString());
+                if(n2==0)
+                {
+                    Toast.makeText(MainActivity.this, "Divison not possible", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    int n3 = n1 / n2;
+                    String n4 = String.valueOf(n3);
+                    t3.setText(n4);
+                }
+            }
+        });
+    }
+}
+
+
+
+
+
+XML
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <EditText
+        android:id="@+id/editTextText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="number"
+        android:hint="num1"
+        android:layout_marginTop="100dp"
+        android:layout_marginLeft="100dp"
+        tools:layout_editor_absoluteX="91dp"
+        tools:layout_editor_absoluteY="49dp" />
+
+    <EditText
+        android:id="@+id/editTextText2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="number"
+        android:hint="Num2"
+        android:layout_marginTop="150dp"
+        android:layout_marginLeft="-210dp"
+        tools:layout_editor_absoluteX="89dp"
+        tools:layout_editor_absoluteY="109dp" />
+
+    <EditText
+        android:id="@+id/editTextText3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="number"
+        android:hint="Result"
+        android:layout_marginTop="200dp"
+        android:layout_marginLeft="-210dp"
+        tools:layout_editor_absoluteX="87dp"
+        tools:layout_editor_absoluteY="175dp" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add"
+        android:layout_marginTop="270dp"
+        android:layout_marginLeft="-300dp"
+        tools:layout_editor_absoluteX="9dp"
+        tools:layout_editor_absoluteY="264dp" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sub"
+        android:layout_marginTop="270dp"
+        android:layout_marginLeft="-1dp"
+        tools:layout_editor_absoluteX="107dp"
+        tools:layout_editor_absoluteY="264dp" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mul"
+        android:layout_marginTop="270dp"
+        android:layout_marginLeft="-1dp"
+        tools:layout_editor_absoluteX="210dp"
+        tools:layout_editor_absoluteY="264dp" />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Div"
+        android:layout_marginTop="270dp"
+        android:layout_marginLeft="-1dp"
+        tools:layout_editor_absoluteX="304dp"
+        tools:layout_editor_absoluteY="264dp" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>
