@@ -1,0 +1,154 @@
+main java                                                                                                                                                                                                    package com.example.grocery;
+
+import androidx.appcompat.app.AppCompatActivity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+public class MainActivity extends AppCompatActivity {
+
+    EditText etRiceQty, etOilQty, etSugarQty;
+    Button btnBill;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        etRiceQty = findViewById(R.id.etRiceQty);
+        etOilQty = findViewById(R.id.etOilQty);
+        etSugarQty = findViewById(R.id.etSugarQty);
+        btnBill = findViewById(R.id.btnBill);
+
+        btnBill.setOnClickListener(v -> {
+            try {
+                int riceQty = Integer.parseInt(etRiceQty.getText().toString());
+                int oilQty = Integer.parseInt(etOilQty.getText().toString());
+                int sugarQty = Integer.parseInt(etSugarQty.getText().toString());
+
+                // Unit prices
+                int ricePrice = 60;
+                int oilPrice = 150;
+                int sugarPrice = 40;
+
+                int totalRice = riceQty * ricePrice;
+                int totalOil = oilQty * oilPrice;
+                int totalSugar = sugarQty * sugarPrice;
+
+                int totalAmount = totalRice + totalOil + totalSugar;
+
+                // Send data to next activity
+                Intent intent = new Intent(MainActivity.this, bill.class);
+                intent.putExtra("rice", totalRice);
+                intent.putExtra("oil", totalOil);
+                intent.putExtra("sugar", totalSugar);
+                intent.putExtra("total", totalAmount);
+                startActivity(intent);
+
+            } catch (Exception e) {
+                Toast.makeText(this, "Please enter valid quantities!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+}
+
+
+
+
+main xml
+
+?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <EditText
+        android:id="@+id/etRiceQty"
+        android:hint="Enter Rice Quantity (kg)"
+        android:inputType="number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <EditText
+        android:id="@+id/etOilQty"
+        android:hint="Enter Oil Quantity (litre)"
+        android:inputType="number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <EditText
+        android:id="@+id/etSugarQty"
+        android:hint="Enter Sugar Quantity (kg)"
+        android:inputType="number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/btnBill"
+        android:text="Generate Bill"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"/>
+
+</LinearLayout>
+
+
+
+
+bill java 
+
+package com.example.grocery;
+
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.widget.TextView;
+
+public class bill extends AppCompatActivity {
+
+    TextView tvBill;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_bill);
+
+        tvBill = findViewById(R.id.tvBill);
+
+        int rice = getIntent().getIntExtra("rice", 0);
+        int oil = getIntent().getIntExtra("oil", 0);
+        int sugar = getIntent().getIntExtra("sugar", 0);
+        int total = getIntent().getIntExtra("total", 0);
+
+        tvBill.setText("🛒 Grocery Bill\n"
+                + "----------------------\n"
+                + "Rice Amount: ₹" + rice + "\n"
+                + "Oil Amount: ₹" + oil + "\n"
+                + "Sugar Amount: ₹" + sugar + "\n"
+                + "----------------------\n"
+                + "Total Amount: ₹" + total);
+    }
+}
+
+
+
+
+bill xml 
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/tvBill"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>
