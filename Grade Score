@@ -1,0 +1,236 @@
+MainActivity.java
+
+package com.example.internal1;
+
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+
+    EditText e1, e2, e3;
+    Button b1, b2;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main); // connects this Java file to the above XML layout
+
+        // link the variables to UI elements
+        e1 = findViewById(R.id.editText1);  // name
+        e2 = findViewById(R.id.editText2);  // internal
+        e3 = findViewById(R.id.editText3);  // external
+        b1 = findViewById(R.id.button1);    // save
+        b2 = findViewById(R.id.button2);    // view
+
+        // when "Save Marks" button clicked
+        b1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = e1.getText().toString();
+
+                if (name.isEmpty()) {
+                    Toast.makeText(MainActivity.this, "Provide a name", Toast.LENGTH_SHORT).show();
+                } else {
+                    int internal = Integer.parseInt(e2.getText().toString());
+                    int external = Integer.parseInt(e3.getText().toString());
+                    int total = internal + external;
+
+                    // store data in SharedPreferences
+                    SharedPreferences sp = getSharedPreferences("Myprefs", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.putInt(name, total); // key = name, value = total marks
+                    editor.apply();
+
+                    Toast.makeText(MainActivity.this, "Marks Saved Successfully!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        // when "View Marks" button clicked
+        b2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, MainActivity2.class);
+                startActivity(i);
+            }
+        });
+    }
+}
+
+
+
+
+activity_main.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Enter Name"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="100dp"
+        android:layout_marginHorizontal="40dp"/>
+
+    <EditText
+        android:id="@+id/editText2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Enter Internal Marks"
+        android:inputType="number"
+        app:layout_constraintTop_toBottomOf="@id/editText1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="40dp"/>
+
+    <EditText
+        android:id="@+id/editText3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Enter External Marks"
+        android:inputType="number"
+        app:layout_constraintTop_toBottomOf="@id/editText2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="40dp"/>
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save Marks"
+        app:layout_constraintTop_toBottomOf="@id/editText3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="40dp"/>
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View Marks"
+        app:layout_constraintTop_toBottomOf="@id/button1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+MainActivity2.java
+
+package com.example.internal1;
+
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity2 extends AppCompatActivity {
+
+    EditText e1, e2;
+    Button b1, b2;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main2);
+
+        e1 = findViewById(R.id.editText4);
+        e2 = findViewById(R.id.editText5);
+        b1 = findViewById(R.id.button3);
+        b2 = findViewById(R.id.button4);
+
+        b1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = e1.getText().toString();
+                if (name.isEmpty()) {
+                    Toast.makeText(MainActivity2.this, "Enter a name", Toast.LENGTH_SHORT).show();
+                } else {
+                    SharedPreferences sp = getSharedPreferences("Myprefs", MODE_PRIVATE);
+                    int total = sp.getInt(name, -1);
+
+                    if (total == -1) {
+                        Toast.makeText(MainActivity2.this, "No record found", Toast.LENGTH_SHORT).show();
+                    } else {
+                        e2.setText("Total Marks: " + total);
+                    }
+                }
+            }
+        });
+
+        b2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent back = new Intent(MainActivity2.this, MainActivity.class);
+                startActivity(back);
+            }
+        });
+    }
+}
+
+
+
+
+
+activity_main2.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity2">
+
+    <EditText
+        android:id="@+id/editText4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Enter Name to View Marks"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="100dp"
+        android:layout_marginHorizontal="40dp"/>
+
+    <EditText
+        android:id="@+id/editText5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Total Marks will appear here"
+        android:enabled="false"
+        app:layout_constraintTop_toBottomOf="@id/editText4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        >
